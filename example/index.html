@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Setup Poll Plugin & Example</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+		<link rel="shortcut icon" href="./css/favicon.ico"/>
+
+		<!-- REVEAL.JS -->
+		<link rel="stylesheet" href="./js/reveal/reveal.css">
+		<script src="./js/reveal/reveal.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/data-bingo-template.css" media="all"/>
+		<script type="text/javascript" src="./js/init.js" defer></script>
+
+		<!-- POLL PLUGIN -->
+		<link rel="stylesheet" href="../poll/poll.css"/>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<!-- INTRO -->
+				<section class="intro" data-transition="slide" data-background="#105CFD">
+					<article>
+						<h1>Poll plugin, Reveal.js</h1>
+						<figure>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 766 607"><title>Fichier 2picto</title><g id="Calque_2" data-name="Calque 2"><g id="Cloud"><polygon points="584 372 349 372 349 607 584 372"/><path d="M166,300H766C766,134.32,631.69,0,466,0S166,134.32,166,300"/><path d="M36,300V236c-18.72,8.67-36,31.52-36,64Z"/><polygon points="466.98 300 419.98 372 513.98 372 466.98 300"/><path d="M166,300V170A130,130,0,0,0,36,300Z"/><rect x="584" y="449" width="130" height="158"/><polygon points="584 607 584 372 349 607 584 607"/></g></g></svg>
+						</figure>
+					</article>
+				</section>
+
+				<!-- POLL -->
+				<section class="col-free" data-transition="slide" data-background="#ffffff">
+					<article>
+						<h2>Poll plugin</h2>
+						<h3>Question?</h3>
+						<div class="container poll fragment" data-poll-question="Question?">
+							<ul class="responses">
+								<li>Wrong answer</li>
+								<li data-poll="correct">Correct answer</li>
+							</ul>
+							<div class="fragment result"></div>
+						</div>
+					</article>
+				</section>
+
+				<!-- POLL -->
+				<section class="col-free" data-transition="slide" data-background="#ffffff">
+					<article>
+						<h2>Poll plugin</h2>
+						<h3>For you, the progress of artificial intelligence is:</h3>
+						<div class="container poll fragment" data-poll-question="For you, the progress of artificial intelligence is:">
+							<ul class="responses">
+								<li data-poll="correct">Dazzling, since I know there are 36 chips in a potato</li>
+								<li data-poll="correct">Disappointing, 1 + 1 is still 2, my universe did not collapse</li>
+								<li data-poll="correct">Mixed, whatever, Toil! Never recoil!</li>
+							</ul>
+							<div class="fragment result"></div>
+						</div>
+					</article>
+				</section>
+
+				<!-- POLL -->
+				<section class="col-free" data-transition="slide" data-background="#ffffff">
+					<article>
+						<h2>Poll plugin</h2>
+						<h3>What is deep learning?</h3>
+						<div class="container poll fragment" data-poll-question="Qu'est que le deep learning ?">
+							<ul class="responses">
+								<li>An algorithm developed by Google to generate images</li>
+								<li>Self-aware artificial intelligence technology</li>
+								<li data-poll="correct">A machine learning technique based on experience</li>
+							</ul>
+							<div class="fragment result"></div>
+						</div>
+					</article>
+				</section>
+
+				<!-- POLL -->
+				<section class="col-free" data-transition="slide" data-background="#ffffff">
+					<article>
+						<h2>Poll plugin</h2>
+						<h3>Was this plugin useful to you?</h3>
+						<div class="container poll fragment" data-poll-question="Was this plugin useful to you?">
+							<ul class="responses">
+								<li>I'm very happy, I saved some time using the plugin</li>
+								<li>Very useful, my conferences will be interactive!</li>
+							</ul>
+							<div class="fragment result"></div>
+						</div>
+					</article>
+				</section>
+
+			</div>
+		</div>
+	</body>
+</html>
