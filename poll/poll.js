@@ -1,95 +1,116 @@
 /*
- * Poll Plugin
+ * Poll Plugin, Reveal.js
  *
  * By Johannes Schildgen, 2020
  * https://github.com/jschildgen/reveal.js-poll-plugin
- * 
+ *
+ * Modified by Bastien DIDIER, data.bingo 2021
+ * Remove jquery, bug fixes and minor changes
+ *
+ * Updated : Jan 28, 2021
+ *
  */
- x= null;
-var Poll = (function(){
 
-var refresh_interval = null;
-var current_poll = null;
+let Poll = (function(){
 
-function show_status() {
-    $.get( "poll/proxy.php/?method=status", function( data ) { 
-        res = JSON.parse(data);
-        if(!('count' in res)) { return; } // no active poll
-        $(current_poll).find("> .poll-responses").html(res.count == 0 ? "" : res.count);
-    });
-}
+    let currentPoll = null;
+    let refreshInterval = null;
 
-function start_poll() {
-    var question = $(current_poll).children("h1").text();
-
-    var answers = [];
-    $(current_poll).find("ul > li > .poll-answer-text").each(function(i) {
-        answers.push(this.innerHTML);
+    Reveal.addEventListener('fragmentshown', function(event){
+        if(event.fragment.classList.contains('result')){ stop(); }
+        if(!event.fragment.classList.contains('poll')){ return; }
+        currentPoll = event.fragment;
+        start();
     });
 
-    var correct_answers = [];
-    $(current_poll).find("ul > li[data-poll='correct'] > .poll-answer-text").each(function(i) {
-        correct_answers.push(this.innerHTML);
-    });
+    function start() {
 
-    data = { "question" : question, "answers": answers, "correct_answers": correct_answers };
+        if(currentPoll.dataset.pollStatus == "finish"){ return; } //poll already finish
 
-    $.get( "poll/proxy.php/?method=start_poll&data="+encodeURIComponent(JSON.stringify(data)), function( res ) { });
-    refresh_interval = window.setInterval(show_status, 1000);
-}
+        let data = {
+            question: currentPoll.dataset.pollQuestion,
+            answers: new Array(),
+            correct_answers: new Array()
+        };
 
-function stop_poll() { 
-    if(current_poll == null) { return; }
-    clearInterval(refresh_interval);
-    $(current_poll).find("ul > li > .poll-percentage").css("width","0%");
-    $.get( "poll/proxy.php/?method=stop_poll", function( data ) { 
-        res = JSON.parse(data);
-        var total = 0;
-        for(i in res.answers) {
-            total += res.answers[i];
-        }
-        $(current_poll).find("ul > li > .poll-percentage").each(function(i) {
-            percentage = (""+i in res.answers) ? 100*res.answers[i]/total : 0;
-            $(this).css("width",percentage+"%");
-        })
-
-        $(current_poll).find("ul > li[data-poll='correct'] > .poll-answer-text").css("font-weight", "bold");
-        $(current_poll).find("ul > li[data-poll='correct'] > .poll-answer-text").each(function(i) { $(this).html("&rightarrow; "+$(this).html()+" &leftarrow;")});
-        current_poll = null;
-    });
-}
-
-Reveal.addEventListener( 'fragmentshown', function( event ) {
-    if(!$(event.fragment).hasClass("poll")) { return; }
-    current_poll = event.fragment;
-    start_poll();
-} );
-
-
-return {
-    init: function() {    
-        if(window.location.search.match( /print-pdf/gi )) {
-            /* don't show poll in print view */
-            return;
-        }
-
-        $(".poll > ul > li").not(":has(>span)").click(function() { 
-            stop_poll();
+        let answersEl = currentPoll.querySelectorAll('ul > li > .poll-answer-text');
+        answersEl.forEach(el => {
+            data.answers.push(el.innerHTML);
         });
 
-        $(".poll > ul > li").not(":has(>span)").each(function(i) {
-            this.innerHTML = '<span class="poll-percentage"></span>'
-                            +'<span class="poll-answer-text">'+this.innerHTML+'</span>';
+        let correctAnswersEl = currentPoll.querySelectorAll('ul > li[data-poll="correct"] > .poll-answer-text');
+        correctAnswersEl.forEach(el => {
+            data.correct_answers.push(el.innerHTML);
         });
 
-        $(".poll").not(":has(>.poll-responses)").each(function(i) { 
-            $(this).append('<span class="poll-responses"></span>');
-        });
+        fetch('./poll/api/?method=start_poll&data='+encodeURIComponent(JSON.stringify(data)), {method: 'POST'});
 
-        $(".poll").show();
+        refreshInterval = window.setInterval(votersCount, 1000);
     }
-}
+    
+    function votersCount() {
+        fetch('./poll/api/?method=status', {method: 'GET'}).then( response => {
+            return response.json();
+        }).then(data => {
+            if(!('count' in data)) { return; } // no active poll
+            currentPoll.querySelector('.votersCount').innerHTML = data.count == 0 ? "0" : data.count;
+        });
+    }
 
+    function stop() { 
+        if(currentPoll == null) { return; }
+        clearInterval(refreshInterval);
+
+        fetch('./poll/api/?method=stop_poll', {method: 'GET'}).then( response => {
+            return response.json();
+        }).then(data => {
+            
+            let total = 0;
+            for(i in data.answers) {
+                total += data.answers[i];
+            }
+
+            let percentageEl = currentPoll.querySelectorAll('ul > li > .poll-percentage');
+            percentageEl.forEach((el,index) => {
+                const percentage = (index.toString() in data.answers) ? 100*data.answers[i]/total : 0;
+                el.style.width = percentage+"%";
+            });
+            
+            let correctAnswersEl = currentPoll.querySelectorAll('ul > li[data-poll="correct"]');
+            correctAnswersEl.forEach((el, index) => {
+                correctAnswersEl[index].classList.add("correct");
+            });
+
+            currentPoll.dataset.pollStatus = "finish";
+            currentPoll = null;
+        });
+    }
+
+    return {
+        init: function() {    
+            if(window.location.search.match( /print-pdf/gi )) {
+                /* don't show poll in print view */
+                return;
+            }
+
+            let resultEl = document.querySelectorAll('.poll > .result');
+            resultEl.forEach(el => {
+                el.addEventListener("click", stop, false);
+            });
+            
+            let answersEl = document.querySelectorAll('.poll > .responses > li');
+            answersEl.forEach(el => {
+                el.innerHTML = '<div class="poll-percentage"></div>'
+                              +'<div class="poll-answer-text">'+el.innerHTML+'</div>'
+            });
+            
+            let pollsEl = document.querySelectorAll('.poll');
+            pollsEl.forEach(el => {
+                el.innerHTML += '<p class="voters">Votant(s) : <span class="votersCount">0</span></p>';
+                el.style.display = 'block';
+            });
+        }
+    }
 })();
 
-Reveal.registerPlugin( 'poll', Poll );
+Reveal.registerPlugin('poll',Poll);

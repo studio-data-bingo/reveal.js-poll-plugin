@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sondage</title>
+  <script src="./app.js"></script>
+  <style>
+    
+    @charset "UTF-8";
+    @import url('https://assets.data.bingo/font/?family=data-bingo,ibm-plex-mono,gerstner-programm');
+    
+    :root{    
+      --theme-global-margin: 15px;
+      --theme-font-family: 'Gerstner Programm';
+      --theme-text-size : 15px;
+      --theme-title-size: 25px;
+      --theme-font-color: #000;
+    }
+
+    *{
+      margin:0; padding:0;
+      list-style: none;
+      font-family: var(--theme-font-family);
+      font-weight: normal;
+      font-size: var(--theme-text-monospace-size);
+      outline: none;
+      color:var(--theme-font-color);
+    }
+
+    section{
+      padding:var(--theme-global-margin);
+    }
+
+    #question{
+      font-size: var(--theme-title-size);
+      text-align: center;
+    }
+    
+    #answers{
+      margin-top:30px;
+    }
+
+    button{
+      padding:15px;
+      font-size: var(--theme-text-size);
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 50px;
+      border: 1px solid #000;
+    }
+
+    button:nth-child(4n+1){
+      background-color: #105CFD;
+    }
+    button:nth-child(4n+2){
+      background-color: #A17127; 
+    }
+    button:nth-child(4n+3){
+      background-color: #F93315; 
+    }
+    button:nth-child(4n+4){
+      background-color: #FFD700; 
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
+    .selected{
+      opacity: 1 !important;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <h1 id="question"></h1>    
+    <div id="answers"></div>
+  </section>
+</body>
+</html>
