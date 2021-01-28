@@ -1,5 +1,6 @@
-# reveal.js-poll-plugin
-Plugin for embedding polls / quizzes into reveal.js presentations
+<h1 style="font-size: 3em;">Poll plugin, Reveal.js</h1>
+
+Poll is a plugin for integrating polls and quizzes into reveal.js presentations. This plugin allows you to collect the impressions of your participants in your conferences or to test their knowledge. This plugin does not collect any personal data
 
 ## General Information
 
@@ -11,19 +12,18 @@ The poll plugin consists of three parts:
 
 When a slide is shown that has a poll, the audience can open the mobile website and vote. When the presenter clicks on one of the answers, the poll is finished and the result is shown on the slides as a bar chart. All the time, when there is at least one response, the number of participations is shown on the top right corner of the poll.
 
-![Screenshot](screenshot.png)
+![Poll User App](assets/poll-user-app.png)
 
-![Screenshot](screenshot_result.png)
+![Poll result](assets/poll-result.png)
 
 ## Files
 
-- index.php Mobile web site for end users to participate in the poll
-- script.js Javascript logic for the mobile web site
-- poll.css Stylesheet for reveal.js
-- poll.js reveal.js Plugin
-- proxy.php PHP script that runs on the presenter machine to forward API calls to the server
-- api/index.php PHP script that handles API requests (start/stop poll, respond, ...)
-- api/poll.db SQLite database that stores the questions, answers and responses
+- poll/index.html Mobile web site for end users to participate in the poll
+- poll/app.js Javascript logic for the mobile web site
+- poll/poll.css Stylesheet for reveal.js
+- poll/poll.js reveal.js Plugin
+- poll/api/index.php PHP script that handles API requests (start/stop poll, respond, ...)
+- poll/api/poll.db SQLite database that stores the questions, answers and responses
 
 ## Installation and Usage
 
@@ -43,20 +43,25 @@ The web server that hosts the API and the database requires PHP and php-sqlite3.
 The presentation client needs a PHP-enabled web server to forward API requests to the server via the script proxy.php. It's also possible that the presentation client is the same machine as the web server.
 
 1. Move the content of the `poll` folder to the reveal.js presentation directory
-1. Write the URL to the server into proxy.php
+1. Update the fetch path in poll.js to your api path
 1. Include the CSS in your slides: `<link rel="stylesheet" href="poll/poll.css" />`
 1. Initialize reveal.js with the following dependency: `{ src: 'poll/poll.js', async: true }`
 1. Add polls to your slides:
 
 ```
-<div class="poll fragment" style="bottom:50px">
- <h1>What is the question?</h1>
- <ul>
-   <li>Wrong answer</li>
-   <li data-poll="correct">Correct answer</li>
- </ul>
- <h2>http://example.com</h2>
+<div class="container poll fragment" data-poll-question="Question?">
+  <ul class="responses">
+    <li>Wrong answer</li>
+    <li data-poll="correct">Correct answer</li>
+  </ul>
+  <div class="fragment result"></div>
 </div>
 ```
 
 Use the `style="bottom:..., right:..."` to move the poll to the correct position. 
+
+## License
+MIT licensed
+
+Copyright (C) 2021 Basien Didier, https://data.bingo
+Copyright (c) 2020 Johannes Schildgen
