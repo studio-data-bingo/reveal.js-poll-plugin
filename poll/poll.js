@@ -43,13 +43,13 @@ let Poll = (function(){
             data.correct_answers.push(el.innerHTML);
         });
 
-        fetch('./poll/api/?method=start_poll&data='+encodeURIComponent(JSON.stringify(data)), {method: 'POST'});
+        fetch('../poll/api/?method=start_poll&data='+encodeURIComponent(JSON.stringify(data)), {method: 'POST'});
 
         refreshInterval = window.setInterval(votersCount, 1000);
     }
     
     function votersCount() {
-        fetch('./poll/api/?method=status', {method: 'GET'}).then( response => {
+        fetch('../poll/api/?method=status', {method: 'GET'}).then( response => {
             return response.json();
         }).then(data => {
             if(!('count' in data)) { return; } // no active poll
@@ -61,7 +61,7 @@ let Poll = (function(){
         if(currentPoll == null) { return; }
         clearInterval(refreshInterval);
 
-        fetch('./poll/api/?method=stop_poll', {method: 'GET'}).then( response => {
+        fetch('../poll/api/?method=stop_poll', {method: 'GET'}).then( response => {
             return response.json();
         }).then(data => {
             
@@ -106,7 +106,7 @@ let Poll = (function(){
             
             let pollsEl = document.querySelectorAll('.poll');
             pollsEl.forEach(el => {
-                el.innerHTML += '<p class="voters">Votant(s) : <span class="votersCount">0</span></p>';
+                el.innerHTML += '<p class="voters">Voter(s) : <span class="votersCount">0</span></p>';
                 el.style.display = 'block';
             });
         }
