@@ -18,7 +18,7 @@ When a slide is shown that has a poll, the audience can open the mobile website 
 
 ## Demo
 
-Poll plugin in Reaveal.js presentation
+Poll plugin in Reveal.js presentation
 https://app.data.bingo/reveal.js-poll-plugin/example/
 
 Poll User App
