@@ -44,7 +44,7 @@
   font-weight: bold;
 }
 .poll .correct .poll-answer-text::before {
-  content: "→ ";
+  content: ">>> ";
 }
 .poll .voters{
   float:right;

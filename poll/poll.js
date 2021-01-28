@@ -64,7 +64,7 @@ let Poll = (function(){
         fetch('../poll/api/?method=stop_poll', {method: 'GET'}).then( response => {
             return response.json();
         }).then(data => {
-            
+
             let total = 0;
             for(i in data.answers) {
                 total += data.answers[i];
@@ -72,7 +72,7 @@ let Poll = (function(){
 
             let percentageEl = currentPoll.querySelectorAll('ul > li > .poll-percentage');
             percentageEl.forEach((el,index) => {
-                const percentage = (index.toString() in data.answers) ? 100*data.answers[i]/total : 0;
+                const percentage = (index.toString() in data.answers) ? 100*data.answers[index]/total : 0;
                 el.style.width = percentage+"%";
             });
             
