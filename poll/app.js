@@ -11,7 +11,7 @@ function get_poll() {
     let questionEl = document.getElementById('question');
     let answersEl = document.getElementById('answers');
     if(!('question' in data)) { // no quiz active
-      questionEl.innerHTML = 'Aucun sondage en cours';
+      questionEl.innerHTML = 'Awaiting survey…';
       answersEl.style.display = 'none';
     } else if(currentQid == data.qid) { // current question
       return;
