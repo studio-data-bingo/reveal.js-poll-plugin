@@ -71,5 +71,5 @@ Use the `style="bottom:..., right:..."` to move the poll to the correct position
 ## License
 MIT licensed
 
-Copyright (C) 2021 Basien Didier, https://data.bingo
+Copyright (c) 2021 Bastien Didier, https://data.bingo
 Copyright (c) 2020 Johannes Schildgen
